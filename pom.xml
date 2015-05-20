@@ -15,19 +15,27 @@
 	<description>Integrates Jenkins to Bazaar SCM</description>
 	<url>http://wiki.jenkins-ci.org/display/JENKINS/Bazaar+Plugin</url>
 
-	<!-- TODO <developers> <developer> <id>ms</id> <name>Markus Schwabeneder</name> 
-		<email>markus.schwabeneder@seqis.com</email> </developer> </developers> -->
+	<developers>
+		<developer>
+			<id>klemensl</id>
+			<name>Klemens Loschy</name>
+			<email>klemens.loschy@seqis.com</email>
+		</developer>
+		<developer>
+			<id>ms</id>
+			<name>Markus Schwabeneder</name>
+			<email>markus.schwabeneder@seqis.com</email>
+		</developer>
+	</developers>
 
-	<!-- TODO <scm> <connection>scm:git:git://github.com/jenkinsci/bazaar-plugin.git</connection> 
-		<developerConnection>scm:git:git@github.com:jenkinsci/bazaar-plugin.git</developerConnection> 
-		<url>http://github.com/jenkinsci/bazaar-plugin</url> </scm> -->
+	<scm>
+		<connection>scm:git:ssh://github.com/jenkinsci/quality-collector.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/jenkinsci/quality-collector.git</developerConnection>
+		<url>https://github.com/jenkinsci/quality-collector</url>
+	</scm>
 
-	<licenses>
-		<license>
-			<name>Apache 2.0</name> <!-- TODO -->
-			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-		</license>
-	</licenses>
+	<!-- TOTO <licenses> <license> <name>Apache 2.0</name> <url>http://www.apache.org/licenses/LICENSE-2.0.html</url> 
+		</license> </licenses> -->
 
 	<!-- TODO <distributionManagement> <repository> <id>maven.jenkins-ci.org</id> 
 		<url>http://maven.jenkins-ci.org:8081/content/repositories/releases/</url> 
@@ -42,7 +50,7 @@
 		<dependency>
 			<groupId>com.seqis.qualitycollector</groupId>
 			<artifactId>datastore</artifactId>
-			<version>0.0.6</version>
+			<version>0.0.6a</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -56,6 +64,10 @@
 		<repository>
 			<id>repo.jenkins-ci.org</id>
 			<url>http://repo.jenkins-ci.org/public/</url>
+		</repository>
+		<repository>
+			<id>seqis-artifactory</id>
+			<url>http://development.seqis.com/artifactory</url>
 		</repository>
 	</repositories>
 
@@ -78,8 +90,8 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 		</plugins>
