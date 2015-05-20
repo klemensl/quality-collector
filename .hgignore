@@ -4,3 +4,6 @@ syntax: glob
 .classpath
 .svn
 target
+
+syntax: regexp
+^src/main/java/com/seqis/jenkinsci/plugins/qualitycollector/Tmp\.java$
