@@ -67,7 +67,7 @@
 		</repository>
 		<repository>
 			<id>seqis-artifactory</id>
-			<url>http://development.seqis.com/artifactory</url>
+			<url>http://development.seqis.com/artifactory/quality-collector/</url>
 		</repository>
 	</repositories>
 
