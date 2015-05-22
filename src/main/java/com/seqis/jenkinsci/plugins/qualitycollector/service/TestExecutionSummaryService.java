@@ -34,9 +34,12 @@ public class TestExecutionSummaryService {
 
 		final long millisAtStart = System.currentTimeMillis();
 		logger.log(Level.INFO, "dataloading started");
+		logger.log(Level.INFO, String.format("Parameters: start %s, end %s, version %s", summaryTimespan.getStart(), summaryTimespan.getEnd(), testObjectVersion.getName()));
 		
 		final List<TestCaseExecution> testCaseExecutions = this.datastore.findTestCaseExecutionsBy(
 				summaryTimespan.getStart(), summaryTimespan.getEnd(), testObjectVersion);
+
+		logger.log(Level.INFO, String.format("Found %s testCaseExecutions", testCaseExecutions.size()));
 		
 		final Timespan currentTestExecutionTimespan = new Timespan();
 		currentTestExecutionTimespan.setBothTimes(summaryTimespan.getEnd());
