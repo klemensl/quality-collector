@@ -234,11 +234,9 @@ public class QualityCollectorRootAction extends Actionable implements
 	
 	public QualityCollectorRootAction() {
 		super();
-		//this.descriptor = (DescriptorImpl) Jenkins.getInstance().getDescriptorOrDie(getClass());
-		/*this.descriptor = new DescriptorImpl();
+		this.descriptor = (DescriptorImpl) Jenkins.getInstance().getDescriptorOrDie(getClass());
 		this.descriptor.setOuterClass(this);
-		this.descriptor.setSystemParamsForDB();*/
-		this.descriptor = null;
+		this.descriptor.setSystemParamsForDB();
 		this.initConnection();
 		this.addStandardActions();
 	}
