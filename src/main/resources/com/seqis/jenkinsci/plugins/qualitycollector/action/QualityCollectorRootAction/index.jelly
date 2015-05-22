@@ -1,0 +1,85 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
+   <l:layout title="Quality Collector">
+   <l:side-panel>
+    <l:tasks>
+      <l:task icon="images/24x24/up.png" href="../.." title="Back" />
+      <j:if
+         test="${it.isDatastoreSet()}">      
+         <j:forEach items="${it.getAllActions()}" var="action">
+              <l:task icon="${action.getIconFileName()}"  href="${action.getUrlName()}" title="${action.getDisplayName()}" contextMenu="false" />
+         </j:forEach>    
+      </j:if>                
+    </l:tasks> 
+    <j:if
+         test="${it.isDatastoreSet()}">  
+      <div style="margin:auto; text-align:left; width:80%;">  
+         <div>Testobject Version:
+                  <select id="version_select" style="width: 50%;">
+                    <j:forEach items="${it.getTestObjectVersions()}" var="version">
+                       <option value="${version.getId()}">${version.getName()}</option>
+                    </j:forEach>
+                  </select>
+         </div> 
+         <button onclick="loadMainViewData()" style="margin-top: 5px;width:100%;">Reload data</button>
+      </div> 
+    </j:if> 
+   </l:side-panel>
+   <l:main-panel>
+      <link href="${resURL}/plugin/quality-collector/datatables/media/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+      <link href="${resURL}/plugin/quality-collector/css/QualityCollector.css" rel="stylesheet" type="text/css"/>
+      <script type="text/javascript" src="${resURL}/plugin/quality-collector/jquery/js/jquery-1.11.1.min.js"></script>    
+      <script type="text/javascript" src="${resURL}/plugin/quality-collector/js/Chart.js"></script>
+      <script type="text/javascript" src="${resURL}/plugin/quality-collector/js/Chart.StackedBar.js"></script>
+      <script type="text/javascript" src="${resURL}/plugin/quality-collector/datatables/media/js/jquery.dataTables.min.js"></script>  
+      <script type="text/javascript" src="${resURL}/plugin/quality-collector/js/QualityCollector.js"></script>    
+      <script>     
+      	var $j = jQuery.noConflict();
+        var rootAction = <st:bind value="${it}"/>;
+        var testObjectData;
+        var table;
+        var mainViewChart;
+        var selectedTestObjectVersion;
+      </script> 
+      <j:set var="defaultTestObjectVersionId" value="${it.getDefaultTestObjectVersionId()}" />
+      <j:if
+         test="${it.isDatastoreSet()}">        
+         <script> 
+           jQuery(document).ready(function () {
+        	 if (window.sessionStorage){
+        	 	if (!sessionStorage.testObjectVersionID) {
+        	 		sessionStorage.testObjectVersionID = "${defaultTestObjectVersionId}";
+        	 	}
+        	 	selectedTestObjectVersion = sessionStorage.testObjectVersionID;
+        	 }
+        	 else {
+        		 selectedTestObjectVersion = "${defaultTestObjectVersionId}";
+        	 }
+        	 initTestObjectVersion(selectedTestObjectVersion);
+        	 loadMainViewData();
+           });
+           jQuery("#version_select").change(function() {
+        	   loadMainViewData();
+           });  
+         </script> 
+      </j:if>      
+      <h1>Quality Overview</h1>
+      <h3 id="overviewExecutionHeadline"></h3>
+      <div id="overviewExecutionRunCount">
+      </div>
+      <div id="overviewExecutionFailureCount">
+      </div>
+      <div id="overviewExecutionInconclusiveCount">
+      </div>
+      <div id="overviewExecutionIgnoredCount">
+      </div>
+      <div style="width:80%; margin:auto;">
+         <canvas id="mainChart" style="width: 100%; height: 100%;">
+         </canvas>
+      </div> 
+      <j:if
+         test="${!it.isDatastoreSet()}">         
+         <h1 style="color: red;">No valid DB Connection provided</h1>
+      </j:if>            
+   </l:main-panel>
+   </l:layout>
+</j:jelly>

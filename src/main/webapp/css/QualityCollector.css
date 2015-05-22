@@ -1,0 +1,184 @@
+	.quality_collector_ok {
+	    background-color:rgba(0, 255, 0, 0.5);
+	    padding: 10px 0px 10px 0px;
+	    border-radius: 10px;
+	    border: 2px solid;
+	    border-color: rgba(0, 255, 0, 0.9);
+	    width: 70%;
+	    text-align: center;
+	    margin:auto;
+	}
+
+	.quality_collector_ignored {
+	    background-color:rgba(0, 0, 255, 0.5);
+	    padding: 10px 0px 10px 0px;
+	    border-radius: 10px;
+	    border: 2px solid;
+	    border-color: rgba(0, 0, 255, 0.9);
+	    width: 70%;
+	    text-align: center;
+	    margin:auto;
+	}
+
+	.quality_collector_inconclusive {
+	    background-color:rgba(255, 255, 0, 0.5);
+	    padding: 10px 0px 10px 0px;
+	    border-radius: 10px;
+	    border: 2px solid;
+	    border-color: rgba(255, 255, 0, 0.9);
+	    width: 70%;
+	    text-align: center;
+	    margin:auto;
+	}
+	
+	.quality_collector_failure {
+	    background-color:rgba(255, 0, 0, 0.5);
+	    padding: 10px 0px 10px 0px;
+	    border-radius: 10px;
+	    border: 2px solid;
+	    border-color: rgba(255, 0, 0, 0.9);
+	    width: 70%;
+	    text-align: center;
+	    margin:auto;
+	}	
+	
+	.quality_collector_headline_ok {
+	    background-color:rgba(0, 255, 0, 0.5);
+	    padding: 10px 50px 10px 15px;
+	    border-radius: 10px;
+	    border: 2px solid;
+	    border-color: rgba(0, 255, 0, 0.9);
+		width: 40%;
+		margin: auto;
+	    text-align: center;
+	}
+
+	.quality_collector_headline_ignored {
+	    background-color:rgba(0, 0, 255, 0.5);
+	    padding: 10px 50px 10px 15px;
+	    border-radius: 10px;
+	    border: 2px solid;
+	    border-color: rgba(0, 0, 255, 0.9);
+		width: 40%;
+		margin: auto;
+	    text-align: center;
+	}
+
+	.quality_collector_headline_inconclusive {
+	    background-color:rgba(255, 255, 0, 0.5);
+	    padding: 10px 50px 10px 15px;
+	    border-radius: 10px;
+	    border: 2px solid;
+	    border-color: rgba(255, 255, 0, 0.9);		    
+		width: 40%;
+		margin: auto;
+	    text-align: center;
+	}
+	
+	.quality_collector_headline_failure {
+	    background-color:rgba(255, 0, 0, 0.5);
+	    padding: 10px 50px 10px 15px;
+	    border-radius: 10px;
+	    border: 2px solid;
+	    border-color: rgba(255, 0, 0, 0.9);
+		width: 40%;
+		margin: auto;
+	    text-align: center;
+	}
+
+	.quality_collector_summary_text_ok {
+	    background-color:rgba(0, 255, 0, 0.5);
+	    padding: 10px 50px 10px 15px;
+	    border-radius: 10px;
+	    border: 2px solid;
+	    border-color: rgba(0, 255, 0, 0.9);
+		width: 20%;
+		float: left;
+		text-align: center;
+		margin: 2% 0% 2% 4%;
+	}
+
+	.quality_collector_summary_text_ignored {
+	    background-color:rgba(0, 0, 255, 0.5);
+	    padding: 10px 50px 10px 15px;
+	    border-radius: 10px;
+	    border: 2px solid;
+	    border-color: rgba(0, 0, 255, 0.9);
+		width: 20%;
+		float: left;
+		text-align: center;
+		margin: 2% 0% 2% 4%;
+	}
+
+	.quality_collector_summary_text_inconclusive {
+	    background-color:rgba(255, 255, 0, 0.5);
+	    padding: 10px 50px 10px 15px;
+	    border-radius: 10px;
+	    border: 2px solid;
+	    border-color: rgba(255, 255, 0, 0.9);		    
+		width: 20%;
+		float: left;
+		text-align: center;
+		margin: 2% 0% 2% 4%;
+	}
+	
+	.quality_collector_summary_text_failure {
+	    background-color:rgba(255, 0, 0, 0.5);
+	    padding: 10px 50px 10px 15px;
+	    border-radius: 10px;
+	    border: 2px solid;
+	    border-color: rgba(255, 0, 0, 0.9);
+		width: 20%;
+		float: left;
+		text-align: center;
+		margin: 2% 0% 2% 4%;
+	}	
+
+	.quality_collector_summary_text_no_ok {
+	    background-color:rgba(0, 255, 0, 0.1);
+	    padding: 10px 50px 10px 15px;
+	    border-radius: 10px;
+	    border: 2px solid;
+	    border-color: rgba(0, 255, 0, 0.9);
+		width: 20%;
+		float: left;
+		text-align: center;
+		margin: 2% 0% 2% 4%;
+	}
+	
+	.quality_collector_summary_text_no_ignored {
+	    background-color:rgba(0, 0, 255, 0.1);
+	    padding: 10px 50px 10px 15px;
+	    border-radius: 10px;
+	    border: 2px solid;
+	    border-color: rgba(0, 0, 255, 0.9);
+		width: 20%;
+		float: left;
+		text-align: center;
+		margin: 2% 0% 2% 4%;
+	}
+
+	.quality_collector_summary_text_no_inconclusive {
+	    background-color:rgba(255, 255, 0, 0.1);
+	    padding: 10px 50px 10px 15px;
+	    border-radius: 10px;
+	    border: 2px solid;
+	    border-color: rgba(255, 255, 0, 0.9);		    
+		width: 20%;
+		float: left;
+		text-align: center;
+		margin: 2% 0% 2% 4%;
+	}
+	
+	.quality_collector_summary_text_no_failure {
+	    background-color:rgba(255, 0, 0, 0.1);
+	    padding: 10px 50px 10px 15px;
+	    border-radius: 10px;
+	    border: 2px solid;
+	    border-color: rgba(255, 0, 0, 0.9);
+		width: 20%;
+		float: left;
+		text-align: center;
+		margin: 2% 0% 2% 4%;
+	}			
+	

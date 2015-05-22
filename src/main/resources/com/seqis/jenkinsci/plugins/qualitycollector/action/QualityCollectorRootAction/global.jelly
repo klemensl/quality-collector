@@ -1,0 +1,22 @@
+<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
+  <f:section title="Quality Collector" name="quality-collector">
+      <f:entry title="JDBC Connection String" field="dbUrl">
+        <f:textbox/>
+      </f:entry>
+      <f:entry title="DB User" field="dbUser">
+        <f:textbox/>
+      </f:entry>
+      <f:entry title="DB Password" field="dbPassword">
+        <f:password/>
+      </f:entry>
+      <f:entry title="DB DriverClass" field="dbDriverClass">
+        <f:textbox/>
+      </f:entry>
+      <f:validateButton
+         title="Test DB Connection" progress="Testing..."
+         method="testConnection" with="dbUrl,dbUser,dbPassword,dbDriverClass" />  
+      <f:entry title="Default Testobject Version" field="defaultTestObjectVersionId">
+        <f:select id = "defaultTestObjectVersionIdSelect" onclick="updateListBox('defaultTestObjectVersionIdSelect','descriptorByName/com.seqis.jenkinsci.plugins.qualitycollector.QualityCollectorRootAction/fillDefaultTestObjectVersionIdItems')"/>
+      </f:entry>                     
+  </f:section>
+</j:jelly>

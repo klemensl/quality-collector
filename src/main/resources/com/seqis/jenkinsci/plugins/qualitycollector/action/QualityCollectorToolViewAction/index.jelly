@@ -1,0 +1,54 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout" xmlns:f="/lib/form">
+   <l:layout title="Quality Collector">
+   <j:set var="testObjects" value="${it.getTestObjects()}" />
+   <l:side-panel>
+      <div style="width:100%; float:right;">
+         <h3>Last Run Summary</h3>
+         <canvas id="pieChart" style="width:100%; height: 350px; margin-top: 30px; margin-bottom: 30px;">
+         </canvas> 
+      </div> 
+      <div style="margin:auto; text-align:left; width:80%;">  
+         <input name="filter_description" onsearch="applyFilter()" onchange="applyFilter()" type="search" placeholder="Tool Filter" style="width:100%"/>
+         <button onclick="applyFilter()" style="margin-top: 5px;width:100%;">Apply Filter</button>
+         <button onclick="loadTableData()" style="margin-top: 5px;width:100%;">Reload Data</button>
+      </div>
+   </l:side-panel>
+   <l:main-panel>
+      <link href="${resURL}/plugin/quality-collector/datatables/media/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+      <link href="${resURL}/plugin/quality-collector/css/QualityCollector.css" rel="stylesheet" type="text/css"/>
+      <script type="text/javascript" src="${resURL}/plugin/quality-collector/jquery/js/jquery-1.11.1.min.js"></script>    
+      <script type="text/javascript" src="${resURL}/plugin/quality-collector/js/Chart.js"></script>
+      <script type="text/javascript" src="${resURL}/plugin/quality-collector/js/Chart.StackedBar.js"></script>
+      <script type="text/javascript" src="${resURL}/plugin/quality-collector/datatables/media/js/jquery.dataTables.min.js"></script>      
+      <script>     
+      	var $j = jQuery.noConflict();
+        var action = <st:bind value="${it}"/>;
+        var testObjectData;
+        var table;
+        var pieChartObject;
+        $j(document).ready(function ($) {
+    	    table = $j('#statistics').DataTable({columns: [
+    	                                                  { "title": "Tool", "width": "20%" },
+    	                                                  { "title": "Last runs", "width": "50%", "ordering": false, "bSortable": false },
+    	                                                  { "title": "Date of last run", "width": "15%"},
+    	                                                  { "title": "Result of last run", "width": "15%", "type": "run_result"}
+    	                                              ],    
+    	                                          "dom": 't'});
+    	    loadTableData();
+    	});
+      </script>    
+      <script type="text/javascript" src="${resURL}/plugin/quality-collector/js/QualityCollector.js"></script>
+      <h1>Tool View</h1>
+      <h3><span></span></h3>
+      <div>
+         <table id="statistics"
+            style="margin-right: 5%;margin-top: 0px; width: 95%;" class="compact stripe">
+            <thead>
+            </thead>
+            <tbody>
+            </tbody>
+         </table>
+      </div>      
+   </l:main-panel>
+   </l:layout>
+</j:jelly>
