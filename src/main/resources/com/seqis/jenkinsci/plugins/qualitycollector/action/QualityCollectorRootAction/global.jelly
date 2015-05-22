@@ -16,7 +16,7 @@
          title="Test DB Connection" progress="Testing..."
          method="testConnection" with="dbUrl,dbUser,dbPassword,dbDriverClass" />  
       <f:entry title="Default Testobject Version" field="defaultTestObjectVersionId">
-        <f:select id = "defaultTestObjectVersionIdSelect" onclick="updateListBox('defaultTestObjectVersionIdSelect','descriptorByName/com.seqis.jenkinsci.plugins.qualitycollector.QualityCollectorRootAction/fillDefaultTestObjectVersionIdItems')"/>
+        <f:select id = "defaultTestObjectVersionIdSelect" onclick="updateListBox('defaultTestObjectVersionIdSelect','descriptorByName/com.seqis.jenkinsci.plugins.qualitycollector.action.QualityCollectorRootAction/fillDefaultTestObjectVersionIdItems')"/>
       </f:entry>                     
   </f:section>
 </j:jelly>
