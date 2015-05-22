@@ -1,4 +1,4 @@
-package com.seqis.jenkinsci.plugins.qualitycollector;
+package com.seqis.jenkinsci.plugins.qualitycollector.action;
 
 import com.seqis.data.entity.TestCaseExecution;
 

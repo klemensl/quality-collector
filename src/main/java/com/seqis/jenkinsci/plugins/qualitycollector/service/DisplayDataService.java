@@ -3,7 +3,7 @@ package com.seqis.jenkinsci.plugins.qualitycollector.service;
 import java.util.Collection;
 
 import com.seqis.data.entity.TestObjectVersion;
-import com.seqis.jenkinsci.plugins.qualitycollector.ActionWithDescription;
+import com.seqis.jenkinsci.plugins.qualitycollector.action.ActionWithDescription;
 import com.seqis.jenkinsci.plugins.qualitycollector.dto.ChartDto;
 import com.seqis.jenkinsci.plugins.qualitycollector.dto.MainPageDisplayDataDto;
 import com.seqis.jenkinsci.plugins.qualitycollector.dto.TestExecutionSummaryTableEntryDto;

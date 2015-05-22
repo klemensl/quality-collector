@@ -8,8 +8,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.seqis.data.entity.TestObjectVersion;
-import com.seqis.jenkinsci.plugins.qualitycollector.ActionWithDescription;
 import com.seqis.jenkinsci.plugins.qualitycollector.Constants;
+import com.seqis.jenkinsci.plugins.qualitycollector.action.ActionWithDescription;
 import com.seqis.jenkinsci.plugins.qualitycollector.dto.ChartDto;
 import com.seqis.jenkinsci.plugins.qualitycollector.dto.PieChartEntryDto;
 import com.seqis.jenkinsci.plugins.qualitycollector.dto.TableWithChartsDto;

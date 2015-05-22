@@ -1,4 +1,4 @@
-package com.seqis.jenkinsci.plugins.qualitycollector;
+package com.seqis.jenkinsci.plugins.qualitycollector.action;
 
 import hudson.model.Action;
 
@@ -9,6 +9,7 @@ import jenkins.model.ModelObjectWithContextMenu;
 import org.kohsuke.stapler.bind.JavaScriptMethod;
 
 import com.seqis.data.entity.TestCaseExecution;
+import com.seqis.jenkinsci.plugins.qualitycollector.Constants;
 import com.seqis.jenkinsci.plugins.qualitycollector.dto.TableWithChartsDto;
 import com.seqis.jenkinsci.plugins.qualitycollector.service.TableDataService;
 import com.seqis.jenkinsci.plugins.qualitycollector.service.TestObjectVersionService;

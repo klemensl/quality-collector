@@ -7,8 +7,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.seqis.data.entity.TestObjectVersion;
-import com.seqis.jenkinsci.plugins.qualitycollector.ActionWithDescription;
 import com.seqis.jenkinsci.plugins.qualitycollector.Constants;
+import com.seqis.jenkinsci.plugins.qualitycollector.action.ActionWithDescription;
 import com.seqis.jenkinsci.plugins.qualitycollector.dto.ChartDatasetDto;
 import com.seqis.jenkinsci.plugins.qualitycollector.dto.ChartDto;
 import com.seqis.jenkinsci.plugins.qualitycollector.dto.TestExecutionSummaryDto;

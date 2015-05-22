@@ -1,4 +1,4 @@
-package com.seqis.jenkinsci.plugins.qualitycollector;
+package com.seqis.jenkinsci.plugins.qualitycollector.action;
 
 import hudson.Extension;
 import hudson.model.Action;
@@ -33,6 +33,7 @@ import com.seqis.data.Datastore;
 import com.seqis.data.entity.TestCaseExecution;
 import com.seqis.data.entity.TestObjectVersion;
 import com.seqis.data.hibernate.HibernateDatastore;
+import com.seqis.jenkinsci.plugins.qualitycollector.Constants;
 import com.seqis.jenkinsci.plugins.qualitycollector.dto.MainPageDisplayDataDto;
 import com.seqis.jenkinsci.plugins.qualitycollector.service.DisplayDataService;
 import com.seqis.jenkinsci.plugins.qualitycollector.service.TableDataService;
