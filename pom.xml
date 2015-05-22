@@ -9,7 +9,7 @@
 
 	<artifactId>quality-collector</artifactId>
 	<groupId>com.seqis.jenkins-ci.plugins</groupId>
-	<version>0.1.6</version>
+	<version>0.1.7</version>
 	<packaging>hpi</packaging>
 	<name>Quality Collector plugin</name>
 	<description>Integrates Jenkins to Bazaar SCM</description>
