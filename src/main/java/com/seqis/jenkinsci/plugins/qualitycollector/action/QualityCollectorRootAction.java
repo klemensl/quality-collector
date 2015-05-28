@@ -12,6 +12,7 @@ import hudson.util.ListBoxModel;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +23,6 @@ import jenkins.model.Jenkins;
 import jenkins.model.ModelObjectWithContextMenu;
 import net.sf.json.JSONObject;
 
-import org.hibernate.HibernateException;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
@@ -32,7 +32,7 @@ import org.kohsuke.stapler.bind.JavaScriptMethod;
 import com.seqis.data.Datastore;
 import com.seqis.data.entity.TestCaseExecution;
 import com.seqis.data.entity.TestObjectVersion;
-import com.seqis.data.hibernate.HibernateDatastore;
+import com.seqis.data.ormlite.ORMLiteDatastore;
 import com.seqis.jenkinsci.plugins.qualitycollector.Constants;
 import com.seqis.jenkinsci.plugins.qualitycollector.dto.MainPageDisplayDataDto;
 import com.seqis.jenkinsci.plugins.qualitycollector.service.DisplayDataService;
@@ -44,6 +44,7 @@ import com.seqis.jenkinsci.plugins.qualitycollector.service.TestObjectVersionSer
 public class QualityCollectorRootAction extends Actionable implements
 		RootAction, ModelObjectWithContextMenu,
 		Describable<QualityCollectorRootAction>, ActionWithDescription {
+	
 	private static final String QUALITY_COLLECTOR_DASHBOARD_URL = "quality_collector_dashboard";
 	private static final String QUALITY_COLLECTOR_DASHBOARD_NAME = "Quality Collector Dashboard";
 	private static final String QUALITY_COLLECTOR_DASHBOARD_ICONFILENAME = "/plugin/quality-collector/images/qc-symbol.png";
@@ -58,25 +59,19 @@ public class QualityCollectorRootAction extends Actionable implements
 	private TestObjectVersionService testObjectVersionService;
 
 	@Extension
-	public static final class DescriptorImpl extends
-			Descriptor<QualityCollectorRootAction> {
-
+	public static final class DescriptorImpl extends Descriptor<QualityCollectorRootAction> {
 		private String dbUrl;
 		private String dbPassword;
 		private String dbUser;
 		private String dbDriverClass;
 		private String defaultTestObjectVersionId;
-		private QualityCollectorRootAction outerClass;
+		private QualityCollectorRootAction qualityCollectorRootAction;
 
-		public DescriptorImpl() {
-			super();
-			super.load();
-		}
 		
 		@DataBoundConstructor
 		public DescriptorImpl(String dbUrl, String dbPassword, String dbUser,
 				String dbDriverClass, String defaultTestObjectVersionId) {
-			super();
+
 			super.load();
 			this.dbUrl = dbUrl;
 			this.dbPassword = dbPassword;
@@ -91,73 +86,59 @@ public class QualityCollectorRootAction extends Actionable implements
 			return this.getClass().getSimpleName();
 		}
 
-		public String getDbUrl() {
-			return this.dbUrl;
-		}
-
+		public String getDbUrl() { return this.dbUrl; }
 		public void setUrl(String dbUrl) {
 			this.dbUrl = dbUrl;
 			super.save();
 		}
 
-		public String getDbPassword() {
-			return this.dbPassword;
-		}
-
+		public String getDbPassword() { return this.dbPassword; }
 		public void setDbPassword(String dbPassword) {
 			this.dbPassword = dbPassword;
 			super.save();
 		}
 
-		public String getDbUser() {
-			return this.dbUser;
-		}
-
+		public String getDbUser() { return this.dbUser; }
 		public void setDbUser(String dbUser) {
 			this.dbUser = dbUser;
 			super.save();
 		}
 
-		public String getDbDriverClass() {
-			return this.dbDriverClass;
-		}
-
+		public String getDbDriverClass() { return this.dbDriverClass; }
 		public void setDbDriverClass(String dbDriverClass) {
 			this.dbDriverClass = dbDriverClass;
 			super.save();
 		}
 
-		public String getDefaultTestObjectVersionId() {
-			return this.defaultTestObjectVersionId;
-		}
-
+		public String getDefaultTestObjectVersionId() { return this.defaultTestObjectVersionId; }
 		public void setDefaultTestObjectVersionId(String defaultTestObjectVersionId) {
 			this.defaultTestObjectVersionId = defaultTestObjectVersionId;
 			super.save();
 		}
 
-		public void setOuterClass(QualityCollectorRootAction outerClass) {
-			this.outerClass = outerClass;
-		}
+		public void setQualityCollectorRootAction(QualityCollectorRootAction qualityCollectorRootAction) { this.qualityCollectorRootAction = qualityCollectorRootAction; }
 
 		@Override
-		public boolean configure(StaplerRequest req, JSONObject formData)
+		public boolean configure(StaplerRequest req, JSONObject config)
 				throws hudson.model.Descriptor.FormException {
-			JSONObject qcConfig = formData.getJSONObject("quality-collector");
+			
+			final JSONObject qcConfig = config.getJSONObject("quality-collector");
 			this.dbUrl = qcConfig.getString("dbUrl");
 			this.dbPassword = qcConfig.getString("dbPassword");
 			this.dbUser = qcConfig.getString("dbUser");
 			this.dbDriverClass = qcConfig.getString("dbDriverClass");
 			this.defaultTestObjectVersionId = qcConfig.getString("defaultTestObjectVersionId");
-			Datastore datastore;
+			//Datastore datastore;
 			super.save();
+			
 			try {
-				datastore = this.rebuildDatastore();
-				this.outerClass.initAllServices(datastore);
-				this.outerClass.replaceStandardActions();
-				return super.configure(req, formData);
+				this.rebuildDatastore();
+				//datastore = this.rebuildDatastore();
+				//this.outerClass.initAllServices(datastore);
+				//this.outerClass.replaceStandardActions();
+				return super.configure(req, config);
 			} catch (Throwable t) {
-				this.outerClass.initAllServices(null);
+				//this.outerClass.initAllServices(null);
 				throw new hudson.model.Descriptor.FormException(
 						"DB connection not valid, Quality Collector will find no data",
 						t,
@@ -171,6 +152,7 @@ public class QualityCollectorRootAction extends Actionable implements
 				@QueryParameter("dbPassword") final String dbPassword,
 				@QueryParameter("dbDriverClass") final String dbDriverClass)
 				throws IOException, ServletException {
+			
 			this.dbUrl = dbUrl;
 			this.dbUser = dbUser;
 			this.dbPassword = dbPassword;
@@ -180,25 +162,25 @@ public class QualityCollectorRootAction extends Actionable implements
 				this.rebuildDatastore();
 				return FormValidation.ok("Success");
 			} catch (ExceptionInInitializerError e) {
-				StringWriter sw = new StringWriter();
-				PrintWriter pw = new PrintWriter(sw);
-				e.printStackTrace(pw);
-				if (e.getException() instanceof HibernateException) {
-					return FormValidation.error("DB connection not successful:");
+				//StringWriter sw = new StringWriter();
+				//PrintWriter pw = new PrintWriter(sw);
+				e.printStackTrace();
+				if (e.getException() instanceof SQLException) { //TODO
+					return FormValidation.error("DB connection not successful: " + e.toString());
 				}
-				return FormValidation.error("Fatal Server Exception: " + sw.toString());
+				return FormValidation.error("Fatal Server Exception: " + e.toString());
 			} catch (Throwable t) {
 				StringWriter sw = new StringWriter();
 				PrintWriter pw = new PrintWriter(sw);
 				t.printStackTrace(pw);				
-				return FormValidation.error("Fatal Server Throwable: " + sw.toString());
+				return FormValidation.error("Fatal Server Throwable: " + t.toString());
 			}
 		}
 
 		public ListBoxModel doFillDefaultTestObjectVersionIdItems() {
 			ListBoxModel items = new ListBoxModel();
-			if (this.outerClass.datastore != null) {
-				for (TestObjectVersion actVersion : this.outerClass.datastore.getAllTestObjectVersions()) {
+			if (this.qualityCollectorRootAction.datastore != null) {
+				for (TestObjectVersion actVersion : this.qualityCollectorRootAction.datastore.getAllTestObjectVersions()) {
 					items.add(actVersion.getName(), Long.toString(actVersion.getId()));
 				}
 			}
@@ -207,47 +189,68 @@ public class QualityCollectorRootAction extends Actionable implements
 
 		public void setSystemParamsForDB() {
 			if (this.dbUrl != null) {
-				System.setProperty("qcollector.db.connection.url", this.dbUrl);
+				System.setProperty(Datastore.QUALITYCOLLECTOR_CONFIG_PREFIX + "connection.url", this.dbUrl);
 			}
 			if (this.dbUser != null) {
-				System.setProperty("qcollector.db.connection.username", this.dbUser);
+				System.setProperty(Datastore.QUALITYCOLLECTOR_CONFIG_PREFIX + "connection.username", this.dbUser);
 			}
 			if (this.dbPassword != null) {
-				System.setProperty("qcollector.db.connection.password", this.dbPassword);
+				System.setProperty(Datastore.QUALITYCOLLECTOR_CONFIG_PREFIX + "connection.password", this.dbPassword);
 			}
 			if (this.dbDriverClass != null) {
-				System.setProperty("qcollector.db.connection.driver_class", this.dbDriverClass);
+				System.setProperty(Datastore.QUALITYCOLLECTOR_CONFIG_PREFIX + "connection.driver_class", this.dbDriverClass);
 			}
 		}
 		
-		private Datastore rebuildDatastore() throws Throwable {
+		private void rebuildDatastore() throws Throwable {
 			this.setSystemParamsForDB();
-			HibernateDatastore.initializeDatabaseConnection();
-			return new HibernateDatastore();
+			this.qualityCollectorRootAction.datastore.reInitializeDatabaseConnection();
 		}		
 	}	
 	
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		new QualityCollectorRootAction().getMainPageDisplayDataFor("1");
-	}
+	}*/
 	
 	public QualityCollectorRootAction() {
-		super();
 		this.descriptor = (DescriptorImpl) Jenkins.getInstance().getDescriptorOrDie(getClass());
-		this.descriptor.setOuterClass(this);
+		this.descriptor.setQualityCollectorRootAction(this);
 		this.descriptor.setSystemParamsForDB();
-		this.initConnection();
+		try {
+			this.datastore = new ORMLiteDatastore();
+			this.initAllServices();
+		} catch (ExceptionInInitializerError e) {
+			if (e.getException() instanceof SQLException) { // TODO was Hibernate Exception
+				logger.log(Level.SEVERE, "DB connection not successful:");
+			}
+			logger.log(Level.SEVERE, "Fatal Server Error: " + e.getMessage());
+		} catch (Throwable t) {
+			logger.log(Level.SEVERE, "Fatal Server Error: " + t.getMessage());
+		}
 		this.addStandardActions();
 	}
 
 	public QualityCollectorRootAction(Datastore datastore) {
 		this.datastore = datastore;
-		this.initAllServices(this.datastore);
-		this.addStandardActions();
 		this.descriptor = (DescriptorImpl) Jenkins.getInstance().getDescriptorOrDie(getClass());
-		this.descriptor.setOuterClass(this);
+		this.descriptor.setQualityCollectorRootAction(this);
+
+		this.initAllServices();
+		this.addStandardActions();
 	}	
+
+	private void initAllServices() {
+		this.testExecutionSummaryService = new TestExecutionSummaryService(this.datastore);
+		this.displayDataService = new DisplayDataService(this.testExecutionSummaryService);
+		this.tableDataService = new TableDataService(this.testExecutionSummaryService);
+		if (this.datastore != null) {
+			this.testObjectVersionService = new TestObjectVersionService(this.datastore.getAllTestObjectVersions());
+		}
+		else {
+			this.testObjectVersionService = new TestObjectVersionService(null);
+		}
+	}
 	
 	public String getIconFileName() {
 		return QUALITY_COLLECTOR_DASHBOARD_ICONFILENAME;
@@ -261,9 +264,9 @@ public class QualityCollectorRootAction extends Actionable implements
 		return QUALITY_COLLECTOR_DASHBOARD_URL;
 	}
 
-	public TableDataService getTableDataService() {
+	/*public TableDataService getTableDataService() {
 		return this.tableDataService;
-	}
+	}*/
 	
 	@JavaScriptMethod
 	public List<TestObjectVersion> getTestObjectVersions() {
@@ -281,6 +284,7 @@ public class QualityCollectorRootAction extends Actionable implements
 	}
 
 	@Override
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Descriptor getDescriptor() {
 		return descriptor;
 	}
@@ -302,24 +306,11 @@ public class QualityCollectorRootAction extends Actionable implements
 	public boolean isDatastoreSet() {
 		return (this.datastore != null);
 	}
-
-	public void initAllServices(Datastore datastore) {
-		this.datastore = datastore;
-		this.testExecutionSummaryService = new TestExecutionSummaryService(this.datastore);
-		this.displayDataService = new DisplayDataService(this.testExecutionSummaryService);
-		this.tableDataService = new TableDataService(this.testExecutionSummaryService);
-		if (this.datastore != null) {
-			this.testObjectVersionService = new TestObjectVersionService(this.datastore.getAllTestObjectVersions());
-		}
-		else {
-			this.testObjectVersionService = new TestObjectVersionService(null);
-		}
-	}
 	
 	public ContextMenu doContextMenu(StaplerRequest request,
 			StaplerResponse response) throws Exception {
 
-		ContextMenu menu = new ContextMenu();
+		final ContextMenu menu = new ContextMenu();
 		if (this.datastore != null) {
 			for (Action action : this.getAllActions()) {
 				menu.add(action.getUrlName(), action.getIconFileName(), action.getDisplayName());
@@ -327,23 +318,6 @@ public class QualityCollectorRootAction extends Actionable implements
 		}
 		return menu;
 	}
-	
-	private void initConnection() {
-		try {
-			this.datastore = new HibernateDatastore();
-			this.initAllServices(this.datastore);
-		} catch (ExceptionInInitializerError e) {
-			if (e.getException() instanceof HibernateException) {
-				this.datastore = null;
-				logger.log(Level.SEVERE, "DB connection not successful:");
-			}
-			this.datastore = null;
-			logger.log(Level.SEVERE, "Fatal Server Error: " + e.getMessage());
-		} catch (Throwable t) {
-			this.datastore = null;
-			logger.log(Level.SEVERE, "Fatal Server Error: " + t.getMessage());
-		}
-	}	
 
 	private void addStandardActions() {
 		this.addAction(new QualityCollectorTeamViewAction(this.tableDataService, this.testObjectVersionService));
@@ -355,7 +329,7 @@ public class QualityCollectorRootAction extends Actionable implements
 		this.addAction(new QualityCollectorTeamToolTestobjectViewAction(this.tableDataService, this.testObjectVersionService));
 	}
 	
-	private void replaceStandardActions() {
+	/*private void replaceStandardActions() {
 		this.replaceAction(new QualityCollectorTeamViewAction(this.tableDataService, this.testObjectVersionService));
 		this.replaceAction(new QualityCollectorToolViewAction(this.tableDataService, this.testObjectVersionService));
 		this.replaceAction(new QualityCollectorTestobjectViewAction(this.tableDataService, this.testObjectVersionService));
@@ -363,5 +337,5 @@ public class QualityCollectorRootAction extends Actionable implements
 		this.replaceAction(new QualityCollectorTeamTestobjectViewAction(this.tableDataService, this.testObjectVersionService));
 		this.replaceAction(new QualityCollectorToolTestobjectViewAction(this.tableDataService, this.testObjectVersionService));
 		this.replaceAction(new QualityCollectorTeamToolTestobjectViewAction(this.tableDataService, this.testObjectVersionService));
-	}	
+	}*/
 }
